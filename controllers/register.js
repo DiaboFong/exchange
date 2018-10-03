@@ -26,7 +26,7 @@ module.exports = {
 
         }
         //2.将注册的用户数据存入表中
-        data = await user.createUser(username, password)
+        data = await user.createUser(username, myUtils.md5(password))
         console.log(JSON.stringify(data))
         if (data.error) {
             ctx.body = fail("注册失败")

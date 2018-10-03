@@ -1,5 +1,6 @@
 let user = require("../models/user")
 let { success, fail } = require("../utils/myUtils")
+let myUtils = require("../utils/myUtils")
 
 module.exports = {
     loginHtml: async(ctx) =>{
@@ -11,7 +12,7 @@ module.exports = {
         let {username,password} = body
         //1. 查询用户是否存在, 判断密码是否正确
         let {error,data} = await user.findUserWithUsername(username)
-        if (data && data.length >0 && data[0].password == password) {
+        if (data && data.length >0 && data[0].password == myUtils.md5(password)) {
             ctx.body = success("ok")
         }else{
             ctx.body = fail("登录失败")
