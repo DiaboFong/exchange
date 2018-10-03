@@ -1,5 +1,9 @@
 let user = require("../models/user")
-let {success,fail} = require("../utils/myUtils")
+let wallet = require("../models/wallet")
+let { success, fail } = require("../utils/myUtils")
+let web3 = require("../utils/myUtils").getweb3()
+let config = require("../config/config")
+let myUtils = require("../utils/myUtils")
 module.exports = {
     //注册页面
     registerHtml: async (ctx) => {
@@ -31,12 +35,35 @@ module.exports = {
 
         //3.创建用户所需钱包(主要用于交易所判断该用户是否有充值行为，先支持基于以太坊的钱包)
 
+        let walletModel = await createWalletAccount(data.data.insertId)
+        await wallet.createWallet(walletModel)
+
+
 
         console.log(JSON.stringify(data))
         ctx.body = success("ok")
 
 
-        ctx.body = { "code": 0 }
-
     }
+}
+
+async function createWalletAccount(insertId) {
+    //(1) 创建钱包账号
+    let walletPassword = myUtils.salt()
+    let account = web3.eth.accounts.create(walletPassword)
+    console.log(account.accounts)
+    //（2）根据账号跟密码生成keystore配置文件
+    let keystore = account.encrypt(walletPassword)
+    console.log(keystore)
+    //(3) 将Keystore转换为string
+    let keystoreString = JSON.stringify(keystore)
+    // (4) 生成wallet对象
+    let walletModel = wallet.walletModel
+    walletModel.userid = insertId
+    walletModel.address = account.address
+    walletModel.privatekey = account.privateKey
+    walletModel.keystore = keystoreString
+    walletModel.password = walletPassword
+    await wallet.createWallet(walletModel)
+    return walletModel
 }
