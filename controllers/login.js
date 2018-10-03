@@ -19,7 +19,7 @@ module.exports = {
                 userid :data[0].id,
                 phone: username,
                 password: password
-            }, config.tokenPassword, { expiresIn: '1h' })
+            }, config.tokenPassword, { expiresIn: '24h' })
 
             console.log(token)
             ctx.body = success(token)
