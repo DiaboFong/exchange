@@ -3,6 +3,7 @@ let wallet = require("../models/wallet")
 let { success, fail } = require("../utils/myUtils")
 let web3 = require("../utils/myUtils").getweb3()
 let myUtils = require("../utils/myUtils")
+
 module.exports = {
     //注册页面
     registerHtml: async (ctx) => {

@@ -86,7 +86,7 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data, status) {
                     console.log(status + JSON.stringify(data))
-                    if (data.code == 0) {
+                    if (data.code == 0) { 
                         document.cookie = "token="+data.data
                         setTimeout(function () {
                             window.location.href = "#"

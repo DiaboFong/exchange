@@ -8,12 +8,38 @@ let static = require("koa-static")
 let path = require("path")
 let views = require("koa-views")
 let koaBody = require("koa-body")
-
+let config = require("./config/config")
 app.use(async (ctx, next) => {
     console.log(`${ctx.method} ${ctx.url} ..........`)
     await next()
 })
 
+//拦截
+app.use(async (ctx,next)=>{
+    //过滤
+    if (ctx.path.indexOf("/login.html")== 0 || ctx.path.indexOf("/register.html") == 0){
+        await next()
+        return
+    }
+
+
+    //获取token
+    let token = ctx.cookies.token
+    console.log(token)
+    if (token == null || token==""){
+        await ctx.render("/login.html")
+        return
+    }
+
+    //验证token
+    let decoded = jwt.verify(token,config.tokenPassword)
+    if (decoded) {
+        console.log(JSON.stringify(decoded))
+        await next()
+    }else {
+        await ctx.render("/login.html")
+    }
+})
 //针对于文件上传的时候，可以解析多个字段
 app.use(koaBody({multipart:true}))
 //注册静态文件的库到中间件
