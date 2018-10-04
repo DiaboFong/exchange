@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提现</title>
+    <link href="/css/exchange.css" rel="stylesheet">
+    <script src="/js/lib/jquery-3.3.1.min.js"></script>
+    <script src="/js/lib/jquery.url.js"></script>
+    <script src="/js/cash.js"></script>
+</head>
+
+<body>
+    <div id="nav"></div>
+    <script>
+        $("#nav").load("./html/nav.html");
+    </script>
+    
+    <div id="main">
+        <h1>提现到钱包地址</h1>
+        <div>
+            <a href="/rechargelist.html?type=0">提现记录</a>
+        </div>
+        <div>
+            <span>可用余额：</span>
+            <span><%= availbalance %></span>
+            <span><%= symbol %></span>
+        </div>
+
+        <form id="cash-form">
+            <div>
+                <span><%= symbol %></span>
+                <span>提现地址：</span>
+                <input type="text" name="to">
+            </div>
+            <div>
+                <span>提现数额 (币数)：</span>
+                <input type="text" name="num">
+            </div>
+            <div>
+                <span>登录密码：</span>
+                <input type="password" name="password">
+            </div>
+            <input id="cash-token-id" type="hidden" name="tokenid" value="<%= tokenid %>">
+            <button type="submit">提交提现申请</button>
+        </form>
+
+    </div>
+
+</body>
+
+</html>
