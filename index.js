@@ -20,9 +20,9 @@ app.use(async (ctx, next) => {
     //过滤
     if (ctx.path.indexOf("/login") == 0
         || ctx.path.indexOf("/register") == 0
-        || ctx.path.indexOf("/css") == 0
-        || ctx.path.indexOf("/js") == 0
-        || ctx.path.indexOf("/html") == 0) {
+        || ctx.path.indexOf("/css/") == 0
+        || ctx.path.indexOf("/js/") == 0
+        || ctx.path.indexOf("/html/") == 0) {
         await next()
         return
     }
@@ -30,7 +30,9 @@ app.use(async (ctx, next) => {
 
     //获取token
     let token = ctx.cookies.get("token")
+    console.log("===token value===")
     console.log(token)
+    console.log("===token value==end=")
     if (token == null || token == "") {
         await ctx.render("/login.html")
         return
@@ -38,8 +40,16 @@ app.use(async (ctx, next) => {
 
     //验证token
     let decoded = jwt.verify(token, config.tokenPassword)
-       if (decoded) {
+    if (decoded) {
+        console.log("===decoded begin===")
         console.log(JSON.stringify(decoded))
+        console.log("===decoded end=====")
+        //获取到加密之前的userid,将userid附加到body或参数列表
+        if (ctx.request.method == "POST") {
+            ctx.request.body.userid = decoded.userid
+        } else {
+            ctx.request.query.userid = decoded.userid
+        }
         await next()
     } else {
         await ctx.render("/login.html")

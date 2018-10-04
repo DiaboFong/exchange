@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人资产</title>
+    <script src="/js/lib/jquery-3.3.1.min.js"></script>
+    <script src="/js/lib/jquery.url.js"></script>
+    <link rel="stylesheet" href="/css/exchange.css">
+</head>
+
+<body>
+
+    <div id="nav"></div>
+    <script>
+        $("#nav").load("html/nav.html")
+    </script>
+
+
+    <div id="main">
+        <ul id="my-token-list">
+            <% list.forEach(function(token){ %>
+                <li>
+                    <div class="token-title">
+                        <%= token.symbol %>
+                            <%= token.name %>
+                    </div>
+                    <div class="token-balance">
+                        <span class="balance-num">
+                            <%= token.balance %>
+                        </span>
+                        <span>
+                            <span class="balance-info available">可用：
+                                <%= token.balance-token.lockbalance %>
+                            </span>
+                            <span class="balance-info lock">锁定：
+                                <%= token.lockbalance %>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="token-btn">
+                        <button>充值</button>
+                        <button><a href=<%= "/cash.html?id=" +token.id %>>提现</a></button>
+                        <button>交易</button>
+                    </div>
+                </li>
+                <% }) %>
+        </ul>
+    </div>
+
+</body>
+
+</html>

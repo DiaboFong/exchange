@@ -89,7 +89,7 @@ $(document).ready(function () {
                     if (data.code == 0) { 
                         document.cookie = "token="+data.data
                         setTimeout(function () {
-                            window.location.href = "#"
+                            window.location.href = "/profile.html"
                         }, 1000)
                     } else {
                         alert(data.msg)
